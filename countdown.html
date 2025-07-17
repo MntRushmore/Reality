@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>reality - coming soon</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Courier New', 'Lucida Console', monospace;
+            background: #1a1a2e;
+            color: #eee;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.5s, color 0.5s;
+        }
+        
+        .container {
+            text-align: center;
+            max-width: 900px;
+            padding: 60px;
+        }
+        
+        .title {
+            font-size: 84px;
+            font-weight: normal;
+            margin-bottom: 40px;
+            font-family: 'Courier New', monospace;
+            overflow: hidden;
+            white-space: nowrap;
+            width: 0;
+            animation: typewriterTitle 2s steps(15, end) 0.5s both;
+            border-right: 3px solid #f39c12;
+            margin: 0 auto 40px;
+        }
+        
+        .title.finished {
+            border-right: none;
+            width: auto;
+        }
+        
+        .subtitle {
+            font-size: 24px;
+            line-height: 1.6;
+            max-width: 600px;
+            margin: 0 auto 60px;
+            font-family: 'Courier New', monospace;
+            font-weight: normal;
+            opacity: 0;
+            animation: fadeInPulse 2s ease-in-out 3s both;
+        }
+        
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 60px;
+            opacity: 0;
+            animation: fadeInPulse 2s ease-in-out 4s both;
+        }
+        
+        .countdown-item {
+            text-align: center;
+            padding: 30px 25px;
+            border: 2px solid #f39c12;
+            background: rgba(243, 156, 18, 0.1);
+            min-width: 120px;
+            position: relative;
+        }
+        
+        .countdown-number {
+            font-size: 42px;
+            font-weight: normal;
+            color: #f39c12;
+            text-shadow: 0 0 10px #f39c12;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .countdown-label {
+            font-size: 14px;
+            color: #eee;
+            text-transform: lowercase;
+            letter-spacing: 1px;
+            margin-top: 8px;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .notify-form {
+            opacity: 0;
+            animation: fadeInPulse 2s ease-in-out 5s both;
+            margin-bottom: 40px;
+        }
+        
+        .email-input {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid #f39c12;
+            color: #eee;
+            padding: 15px 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            width: 320px;
+            margin-right: 15px;
+            outline: none;
+            transition: all 0.3s;
+        }
+        
+        .email-input:focus {
+            border-color: #f39c12;
+            box-shadow: 0 0 15px rgba(243, 156, 18, 0.3);
+        }
+        
+        .email-input::placeholder {
+            color: #888;
+        }
+        
+        .notify-btn {
+            background: #f39c12;
+            color: #1a1a2e;
+            border: none;
+            padding: 15px 25px;
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: normal;
+        }
+        
+        .notify-btn:hover {
+            background: #e67e22;
+            box-shadow: 0 0 20px rgba(243, 156, 18, 0.5);
+        }
+        
+        .hack-club-badge {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            padding: 8px 16px;
+            border: 1px solid #FFFFFF;
+            background: #0000FF;
+            color: #FFFFFF;
+            z-index: 1000;
+            animation: glowBadge 1.5s infinite alternate;
+        }
+        
+        @keyframes typewriterTitle {
+            0% { width: 0; }
+            100% { width: 100%; }
+        }
+        
+        @keyframes fadeInPulse {
+            0% { opacity: 0; transform: scale(0.95); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        
+        @keyframes glowBadge {
+            0% { box-shadow: 0 0 5px #00ffff; }
+            100% { box-shadow: 0 0 20px #00ffff; }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 40px 30px;
+            }
+            
+            .title {
+                font-size: 56px;
+            }
+            
+            .subtitle {
+                font-size: 18px;
+                margin-bottom: 40px;
+            }
+            
+            .countdown {
+                flex-wrap: wrap;
+                gap: 20px;
+            }
+            
+            .countdown-item {
+                min-width: 100px;
+                padding: 20px 15px;
+            }
+            
+            .countdown-number {
+                font-size: 32px;
+            }
+            
+            .email-input {
+                width: 250px;
+                margin-bottom: 15px;
+                margin-right: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hack-club-badge">Coming Soon</div>
+    
+    <div class="container">
+        <h1 class="title">reality</h1>
+        
+        <div class="subtitle">
+            Break free from digital loops.<br>
+            Build tools that reclaim your attention.
+        </div>
+        
+        <div class="countdown">
+            <div class="countdown-item">
+                <div class="countdown-number" id="days">00</div>
+                <div class="countdown-label">days</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-number" id="hours">00</div>
+                <div class="countdown-label">hours</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-number" id="minutes">00</div>
+                <div class="countdown-label">minutes</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-number" id="seconds">00</div>
+                <div class="countdown-label">seconds</div>
+            </div>
+        </div>
+        
+        <div class="notify-form">
+            <input type="email" class="email-input" placeholder="your@email.com" id="emailInput">
+            <button class="notify-btn" onclick="notify()">notify me</button>
+        </div>
+    </div>
+    
+    
+    <script>
+        setTimeout(() => {
+            const title = document.querySelector('.title');
+            title.classList.add('finished');
+        }, 3000);
+        
+        const launchDate = new Date();
+        launchDate.setDate(launchDate.getDate() + 7);
+        
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = launchDate.getTime() - now;
+            
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            
+            document.getElementById('days').textContent = days.toString().padStart(2, '0');
+            document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+            
+            if (distance < 0) {
+                clearInterval(countdownInterval);
+                document.querySelector('.countdown').innerHTML = '<div class="countdown-item"><div class="countdown-number">LIVE</div><div class="countdown-label">now</div></div>';
+            }
+        }
+        
+        const countdownInterval = setInterval(updateCountdown, 1000);
+        updateCountdown();
+        
+        function notify() {
+            const email = document.getElementById('emailInput').value;
+            if (email && email.includes('@')) {
+                fetch('https://n8n.rushilchopra.com/webhook/reality-email', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email })
+                })
+                .then(() => {
+                    alert('Thanks! You\'ll be notified when reality launches.');
+                    document.getElementById('emailInput').value = '';
+                })
+                .catch(() => {
+                    alert('There was an error submitting your email. Try again later.');
+                });
+            } else {
+                alert('Please enter a valid email address.');
+            }
+        }
+        
+        document.addEventListener('click', () => {
+            document.body.style.filter = 'invert(1)';
+            setTimeout(() => {
+                document.body.style.filter = 'none';
+            }, 100);
+        });
+    </script>
+</body>
+</html>
