@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>reality</title>
+    <title>reality - coming soon</title>
     <style>
         * {
             margin: 0;
@@ -15,42 +15,32 @@
             font-family: 'Courier New', 'Lucida Console', monospace;
             background: #1a1a2e;
             color: #eee;
-            overflow-x: hidden;
-            font-size: 16px;
-            line-height: 1.4;
-            font-weight: normal;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
             transition: background 0.5s, color 0.5s;
         }
         
-        .page {
-            width: 100vw;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            align-items: flex-start;
-            padding: 60px 60px 60px 120px;
-            box-sizing: border-box;
+        .container {
+            text-align: center;
+            max-width: 900px;
+            padding: 60px;
         }
         
-        .page-1 { background: #1a1a2e; }
-        .page-2 { background: #16213e; }
-        .page-3 { background: #0f3460; }
-        .page-4 { background: #0e4b99; }
-        .page-5 { background: #2e8b57; }
-        
         .title {
-            font-size: 64px;
+            font-size: 84px;
             font-weight: normal;
             margin-bottom: 40px;
-            margin-top: 80px;
             font-family: 'Courier New', monospace;
             overflow: hidden;
             white-space: nowrap;
             width: 0;
             animation: typewriterTitle 2s steps(15, end) 0.5s both;
             border-right: 3px solid #f39c12;
+            margin: 0 auto 40px;
         }
         
         .title.finished {
@@ -58,72 +48,95 @@
             width: auto;
         }
         
-        .main-text {
-            font-size: 20px;
-            line-height: 1.8;
-            max-width: 900px;
+        .subtitle {
+            font-size: 24px;
+            line-height: 1.6;
+            max-width: 600px;
+            margin: 0 auto 60px;
             font-family: 'Courier New', monospace;
             font-weight: normal;
             opacity: 0;
-            animation: fadeInPulse 2s ease-in-out infinite alternate;
+            animation: fadeInPulse 2s ease-in-out 3s both;
+        }
+        
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
             margin-bottom: 60px;
+            opacity: 0;
+            animation: fadeInPulse 2s ease-in-out 4s both;
         }
         
-        .page-title {
-            font-size: 40px;
-            font-weight: normal;
-            margin-bottom: 30px;
-            margin-top: 40px;
-            font-family: 'Courier New', monospace;
-            text-shadow: 0 0 10px #f39c12, 0 0 20px #f39c12;
-        }
-        
-        .bottom-section {
-            position: absolute;
-            bottom: 30px;
-            left: 120px;
-            right: 60px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .doomscroll-text {
-            font-size: 18px;
-            font-family: 'Courier New', monospace;
-            animation: pulseText 1.2s infinite alternate;
-        }
-        
-        .doomscroll-text:hover {
-            color: #FF6B6B;
-            cursor: pointer;
-        }
-        
-        .progress-container {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .progress-bar {
-            width: 200px;
-            height: 20px;
+        .countdown-item {
+            text-align: center;
+            padding: 30px 25px;
             border: 2px solid #f39c12;
-            background: #1a1a2e;
+            background: rgba(243, 156, 18, 0.1);
+            min-width: 120px;
             position: relative;
         }
         
-        .progress-fill {
-            height: 100%;
-            background: #f39c12;
-            width: 0%;
-            animation: progressFill 8s linear infinite;
+        .countdown-number {
+            font-size: 42px;
+            font-weight: normal;
+            color: #f39c12;
+            text-shadow: 0 0 10px #f39c12;
+            font-family: 'Courier New', monospace;
         }
         
-        .progress-blocks {
-            font-family: 'Courier New', monospace;
+        .countdown-label {
             font-size: 14px;
+            color: #eee;
+            text-transform: lowercase;
             letter-spacing: 1px;
+            margin-top: 8px;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .notify-form {
+            opacity: 0;
+            animation: fadeInPulse 2s ease-in-out 5s both;
+            margin-bottom: 40px;
+        }
+        
+        .email-input {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid #f39c12;
+            color: #eee;
+            padding: 15px 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            width: 320px;
+            margin-right: 15px;
+            outline: none;
+            transition: all 0.3s;
+        }
+        
+        .email-input:focus {
+            border-color: #f39c12;
+            box-shadow: 0 0 15px rgba(243, 156, 18, 0.3);
+        }
+        
+        .email-input::placeholder {
+            color: #888;
+        }
+        
+        .notify-btn {
+            background: #f39c12;
+            color: #1a1a2e;
+            border: none;
+            padding: 15px 25px;
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: normal;
+        }
+        
+        .notify-btn:hover {
+            background: #e67e22;
+            box-shadow: 0 0 20px rgba(243, 156, 18, 0.5);
         }
         
         .hack-club-badge {
@@ -135,60 +148,9 @@
             padding: 8px 16px;
             border: 1px solid #FFFFFF;
             background: #0000FF;
+            color: #FFFFFF;
             z-index: 1000;
             animation: glowBadge 1.5s infinite alternate;
-        }
-        
-        .scroll-hint {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-family: 'Courier New', monospace;
-            font-size: 14px;
-            animation: blink 1.5s infinite;
-        }
-        
-        .content-block {
-            margin: 40px 0;
-            max-width: 800px;
-        }
-        
-        .terminal-line {
-            font-family: 'Courier New', monospace;
-            font-size: 16px;
-            margin: 10px 0;
-        }
-        
-        .green-text {
-            color: #00FF00;
-        }
-
-        .click-dot {
-          position: absolute;
-          width: 12px;
-          height: 12px;
-          background: rgba(255, 0, 0, 0.5);
-          border-radius: 50%;
-          pointer-events: none;
-          animation: fadeDot 2s forwards;
-          z-index: 9999;
-        }
-
-        @keyframes fadeDot {
-          from { opacity: 1; transform: scale(1); }
-          to { opacity: 0; transform: scale(2); }
-        }
-
-        .profile-box {
-          background: rgba(0, 0, 0, 0.6);
-          color: #00ff00;
-          font-family: 'Courier New', monospace;
-          font-size: 14px;
-          padding: 20px;
-          border: 1px solid #00ff00;
-          margin-top: 20px;
-          max-width: 400px;
         }
         
         @keyframes typewriterTitle {
@@ -196,186 +158,88 @@
             100% { width: 100%; }
         }
         
-        @keyframes fadeInText {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
-        }
-
         @keyframes fadeInPulse {
-            0% { opacity: 0.8; transform: scale(1); }
-            100% { opacity: 1; transform: scale(1.03); }
+            0% { opacity: 0; transform: scale(0.95); }
+            100% { opacity: 1; transform: scale(1); }
         }
         
-        @keyframes progressFill {
-            0% { width: 0%; }
-            100% { width: 100%; }
-        }
-        
-        @keyframes blink {
-            0%, 50% { opacity: 1; }
-            51%, 100% { opacity: 0; }
-        }
-
-        @keyframes pulseText {
-            0% { color: #FF6B6B; transform: scale(1); }
-            100% { color: #FF3B3B; transform: scale(1.05); }
-        }
-
         @keyframes glowBadge {
             0% { box-shadow: 0 0 5px #00ffff; }
             100% { box-shadow: 0 0 20px #00ffff; }
         }
         
         @media (max-width: 768px) {
-            .page {
-                padding: 40px 30px 40px 40px;
+            .container {
+                padding: 40px 30px;
             }
             
             .title {
-                font-size: 36px;
-                margin-bottom: 30px;
-                margin-top: 60px;
+                font-size: 56px;
             }
             
-            .main-text {
-                font-size: 16px;
+            .subtitle {
+                font-size: 18px;
                 margin-bottom: 40px;
             }
             
-            .page-title {
-                font-size: 28px;
-                margin-bottom: 20px;
-                margin-top: 30px;
+            .countdown {
+                flex-wrap: wrap;
+                gap: 20px;
             }
             
-            .bottom-section {
-                left: 40px;
-                right: 30px;
-                flex-direction: column;
-                gap: 20px;
-                align-items: flex-start;
+            .countdown-item {
+                min-width: 100px;
+                padding: 20px 15px;
+            }
+            
+            .countdown-number {
+                font-size: 32px;
+            }
+            
+            .email-input {
+                width: 250px;
+                margin-bottom: 15px;
+                margin-right: 0;
             }
         }
     </style>
 </head>
 <body>
-    <div class="hack-club-badge">Submit</div>
+    <div class="hack-club-badge">Coming Soon</div>
     
-    <div class="page page-1">
+    <div class="container">
         <h1 class="title">reality</h1>
         
-        <div class="main-text">
-            You're stuck in a digital loop! Doomscrolling, mindless tapping, and endless distractions. This isn't just about quitting apps. It's about reclaiming control. This YSWS is your chance to build a tool that helps you or others break free from a digital bad habit.
+        <div class="subtitle">
+            Break free from digital loops.<br>
+            Build tools that reclaim your attention.
         </div>
         
-        <div class="bottom-section">
-            <div class="doomscroll-text">build your escape route</div>
-            <div class="progress-container">
-                <div class="progress-bar">
-                    <div class="progress-fill"></div>
-                </div>
-                <div class="progress-blocks">■■■■■■</div>
+        <div class="countdown">
+            <div class="countdown-item">
+                <div class="countdown-number" id="days">00</div>
+                <div class="countdown-label">days</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-number" id="hours">00</div>
+                <div class="countdown-label">hours</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-number" id="minutes">00</div>
+                <div class="countdown-label">minutes</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-number" id="seconds">00</div>
+                <div class="countdown-label">seconds</div>
             </div>
         </div>
         
-        <div class="scroll-hint">SCROLL DOWN</div>
-    </div>
-    
-    <div class="page page-2">
-        <h2 class="page-title">the_algorithm:</h2>
-        
-        <div class="main-text">
-            Algorithms feed your attention addiction. Every scroll is a data point. Every pause is a profile update. This page shows you what you're fighting against.
-        </div>
-        
-        <div class="content-block">
-            <div class="terminal-line">USER_SESSION: 04:47:33</div>
-            <div class="terminal-line">DOPAMINE_HITS: 247</div>
-            <div class="terminal-line">ATTENTION_HARVESTED: 99.7%</div>
-            <div class="terminal-line green-text">STATUS: CAPTURED</div>
-            <div class="terminal-line" id="algorithm-feed">// Loading personalized content stream...</div>
+        <div class="notify-form">
+            <input type="email" class="email-input" placeholder="your@email.com" id="emailInput">
+            <button class="notify-btn" onclick="notify()">notify me</button>
         </div>
     </div>
     
-    <div class="page page-3">
-        <h2 class="page-title">data_extraction:</h2>
-        
-        <div class="main-text">
-            Your clicks aren’t private. Your patterns are productized. If you don’t build tools to protect your digital self, someone else will use it against you.
-        </div>
-        
-        <div class="content-block">
-            <div class="terminal-line">// Add your surveillance capitalism content here</div>
-            <div class="terminal-line">// Data visualization ideas:</div>
-            <div class="terminal-line">// - Real-time data collection simulator</div>
-            <div class="terminal-line">// - Privacy policy decoder</div>
-            <div class="terminal-line">// - Corporate data broker network map</div>
-            <div class="profile-box" id="user-profile">
-              <div>🧠 YOU:</div>
-              <div>- Clicked 0 times</div>
-              <div>- Scroll depth: 0px</div>
-              <div>- Tracking…</div>
-            </div>
-        </div>
-    </div>
-    
-    <div class="page page-4">
-        <h2 class="page-title">get_rewarded:</h2>
-        
-        <div class="main-text">
-            Break a habit, earn a reward. Build a solution for your problem and we’ll send you a physical tool to support your recovery: analog alternatives, productivity boosters, or privacy gear.
-        </div>
-        
-        <div class="content-block">
-            <div class="terminal-line">REWARD SYSTEM:</div>
-            <div class="terminal-line"></div>
-            <div class="terminal-line">Your reward = $5/hr worth of helpful tools or items</div>
-            <div class="terminal-line">Submit a project that genuinely helps break a bad habit</div>
-            <div class="terminal-line">We'll match you with a useful, themed reward</div>
-            <div class="terminal-line">Think: notebooks, timers, analog gear, etc.</div>
-            <div class="terminal-line">Or something custom to your project</div>
-            <div class="terminal-line"></div>
-            <div class="terminal-line green-text">STEP 3: RECEIVE A USEFUL REWARD FOR YOUR EFFORT</div>
-        </div>
-    </div>
-    
-    <div class="page page-5">
-        <h2 class="page-title">ship_now:</h2>
-        
-        <div class="main-text">
-            You’ve seen the problem. Now ship the solution. Join the #reality channel on Hack Club Slack, share your idea, and start building. You’ll get mentorship, rewards, and most importantly — your attention back.
-        </div>
-        
-        <div class="content-block">
-            <div class="terminal-line green-text">$ git clone your-digital-freedom</div>
-            <div class="terminal-line">$ npm install self-awareness</div>
-            <div class="terminal-line">$ yarn build real-solution</div>
-            <div class="terminal-line">$ git push origin recovery</div>
-            <div class="terminal-line"></div>
-            <div class="terminal-line">Project shipped successfully.</div>
-            <div class="terminal-line">Digital life debugging complete.</div>
-            <div class="terminal-line">Welcome back to reality.</div>
-            <div class="terminal-line"></div>
-            <div class="terminal-line">reality.hackclub.com</div>
-        </div>
-    </div>
-
-    <div class="page page-6">
-        <h2 class="page-title">example_ships:</h2>
-        <div class="main-text">
-            Real tools built by real people to break bad habits 💡
-        </div>
-        <div class="content-block">
-          <div class="terminal-line">• Break Bad Habits — Android + iOS minimalist tracker using Compose Multiplatform.</div>
-          <div class="terminal-line">• Quitter — Web app with charts and social support (React + MongoDB).</div>
-          <div class="terminal-line">• Loop Habit Tracker — Open‑source Android with streaks, reminders, and heatmaps.</div>
-          <div class="terminal-line">• Habitica — RPG-style habit gamifier on web & mobile.</div>
-          <div class="terminal-line">• hardtime.nvim — Neovim plugin to break bad typing habits.</div>
-          <div class="terminal-line">• ActivityWatch — Cross-platform desktop tracker for digital well‑being.</div>
-          <div class="terminal-line">• Pavlok Wearable — Hardware zap device that shocks/vibrates when habitual actions detected (e.g. nail‑biting, smoking).</div>
-          <div class="terminal-line">• Pavlok Snore Breaker — Uses ML + Pavlok zapper to interrupt snoring during sleep.</div>
-        </div>
-    </div>
     
     <script>
         setTimeout(() => {
@@ -383,20 +247,53 @@
             title.classList.add('finished');
         }, 3000);
         
-        const progressFill = document.querySelector('.progress-fill');
-        progressFill.addEventListener('animationend', () => {
-            progressFill.style.animation = 'none';
-            setTimeout(() => {
-                progressFill.style.animation = 'progressFill 8s linear infinite';
-            }, 1000);
-        });
+        const launchDate = new Date();
+        launchDate.setDate(launchDate.getDate() + 7);
         
-        window.addEventListener('scroll', () => {
-            const scrollHint = document.querySelector('.scroll-hint');
-            if (window.scrollY > 50 && scrollHint) {
-                scrollHint.style.display = 'none';
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = launchDate.getTime() - now;
+            
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            
+            document.getElementById('days').textContent = days.toString().padStart(2, '0');
+            document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+            
+            if (distance < 0) {
+                clearInterval(countdownInterval);
+                document.querySelector('.countdown').innerHTML = '<div class="countdown-item"><div class="countdown-number">LIVE</div><div class="countdown-label">now</div></div>';
             }
-        });
+        }
+        
+        const countdownInterval = setInterval(updateCountdown, 1000);
+        updateCountdown();
+        
+        function notify() {
+            const email = document.getElementById('emailInput').value;
+            if (email && email.includes('@')) {
+                fetch('https://n8n.rushilchopra.com/webhook/reality-email', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email })
+                })
+                .then(() => {
+                    alert('Thanks! You\'ll be notified when reality launches.');
+                    document.getElementById('emailInput').value = '';
+                })
+                .catch(() => {
+                    alert('There was an error submitting your email. Try again later.');
+                });
+            } else {
+                alert('Please enter a valid email address.');
+            }
+        }
         
         document.addEventListener('click', () => {
             document.body.style.filter = 'invert(1)';
@@ -404,49 +301,6 @@
                 document.body.style.filter = 'none';
             }, 100);
         });
-
-        let clickCount = 0;
-
-        document.addEventListener('click', (e) => {
-          const dot = document.createElement('div');
-          dot.className = 'click-dot';
-          dot.style.left = `${e.pageX}px`;
-          dot.style.top = `${e.pageY}px`;
-          document.body.appendChild(dot);
-          setTimeout(() => dot.remove(), 2000);
-          clickCount++;
-          const profile = document.getElementById('user-profile');
-          if (profile) {
-            profile.children[1].textContent = `- Clicked ${clickCount} times`;
-          }
-        });
-
-        window.addEventListener('scroll', () => {
-          const scrollY = window.scrollY;
-          const profile = document.getElementById('user-profile');
-          if (profile) {
-            profile.children[2].textContent = `- Scroll depth: ${scrollY}px`;
-          }
-        });
-
-        const algorithmFeed = document.getElementById('algorithm-feed');
-        const messages = [
-          "👀 Detected 7s hover on 'get_rewarded'",
-          "📈 Boosted meme content 12%",
-          "🎯 Served targeted notification at 3:14 PM",
-          "🔁 Refreshed feed loop",
-          "🧠 Predicted craving spike in 2 minutes",
-          "🎞️ Injected viral content suggestion",
-          "📊 Calculated dopamine reward delta"
-        ];
-        let msgIndex = 0;
-
-        setInterval(() => {
-          if (algorithmFeed && window.scrollY >= document.querySelector('.page-2').offsetTop) {
-            algorithmFeed.textContent = `// ${messages[msgIndex % messages.length]}`;
-            msgIndex++;
-          }
-        }, 2000);
     </script>
 </body>
 </html>
