@@ -326,8 +326,7 @@
             title.classList.add('finished');
         }, 3000);
         
-        const launchDate = new Date();
-        launchDate.setDate(launchDate.getDate() + 7);
+        const launchDate = new Date('2025-07-24T00:00:00-07:00'); // 1 week from today PDT
         
         function updateCountdown() {
             const now = new Date().getTime();
