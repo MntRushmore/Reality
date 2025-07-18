@@ -170,6 +170,7 @@
             color: #FFFFFF;
             z-index: 1000;
             animation: glowBadge 1.5s infinite alternate;
+            pointer-events: none;
         }
         
         .email-disclaimer {
@@ -306,6 +307,7 @@
         </div>
         
         <div class="notify-form">
+            <input type="text" name="username" id="honeypot" style="display: none;">
             <input type="email" class="email-input" placeholder="your@email.com" id="emailInput">
             <button class="notify-btn" onclick="notify()">notify me</button>
         </div>
@@ -326,7 +328,9 @@
             title.classList.add('finished');
         }, 3000);
         
-        const launchDate = new Date('2025-07-24T00:00:00-07:00'); // 1 week from today PDT
+        const launchDate = new Date();
+        launchDate.setHours(0, 0, 0, 0);
+        launchDate.setDate(launchDate.getDate() + 7);
         
         function updateCountdown() {
             const now = new Date().getTime();
@@ -350,27 +354,32 @@
         
         const countdownInterval = setInterval(updateCountdown, 1000);
         updateCountdown();
+
         
         function notify() {
             const email = document.getElementById('emailInput').value;
-            if (email && email.includes('@')) {
-                fetch('https://n8n.rushilchopra.com/webhook/reality-email', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ email })
-                })
-                .then(() => {
-                    alert('Thanks! You\'ll be notified when reality launches.');
-                    document.getElementById('emailInput').value = '';
-                })
-                .catch(() => {
-                    alert('There was an error submitting your email. Try again later.');
-                });
-            } else {
+            const username = document.getElementById('honeypot')?.value || '';
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if (!emailRegex.test(email)) {
                 alert('Please enter a valid email address.');
+                return;
             }
+
+            fetch('https://n8n.rushilchopra.com/webhook/reality-email', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, username })
+            })
+            .then(() => {
+                alert('Thanks! You\'ll be notified when reality launches.');
+                document.getElementById('emailInput').value = '';
+            })
+            .catch(() => {
+                alert('There was an error submitting your email. Try again later.');
+            });
         }
         // made by rushmore with love @ hack club
         document.addEventListener('click', () => {
