@@ -386,35 +386,35 @@
     </div>
     
     <script>
+      function startReality() {
         setTimeout(() => {
-            const title = document.querySelector('.title');
-            title.classList.add('finished');
+          const title = document.querySelector('.title');
+          title.classList.add('finished');
         }, 3000);
-        
+
         const progressFill = document.querySelector('.progress-fill');
         progressFill.addEventListener('animationend', () => {
-            progressFill.style.animation = 'none';
-            setTimeout(() => {
-                progressFill.style.animation = 'progressFill 8s linear infinite';
-            }, 1000);
+          progressFill.style.animation = 'none';
+          setTimeout(() => {
+            progressFill.style.animation = 'progressFill 8s linear infinite';
+          }, 1000);
         });
-        
+
         window.addEventListener('scroll', () => {
-            const scrollHint = document.querySelector('.scroll-hint');
-            if (window.scrollY > 50 && scrollHint) {
-                scrollHint.style.display = 'none';
-            }
+          const scrollHint = document.querySelector('.scroll-hint');
+          if (window.scrollY > 50 && scrollHint) {
+            scrollHint.style.display = 'none';
+          }
         });
-        
+
         document.addEventListener('click', () => {
-            document.body.style.filter = 'invert(1)';
-            setTimeout(() => {
-                document.body.style.filter = 'none';
-            }, 100);
+          document.body.style.filter = 'invert(1)';
+          setTimeout(() => {
+            document.body.style.filter = 'none';
+          }, 100);
         });
 
         let clickCount = 0;
-
         document.addEventListener('click', (e) => {
           const dot = document.createElement('div');
           dot.className = 'click-dot';
@@ -455,12 +455,13 @@
             msgIndex++;
           }
         }, 2000);
-</script>
-  <script>
-    document.getElementById('enter-site').addEventListener('click', () => {
-      document.getElementById('flashing-warning').style.display = 'none';
-    });
-  </script>
+      }
+
+      document.getElementById('enter-site').addEventListener('click', () => {
+        document.getElementById('flashing-warning').style.display = 'none';
+        startReality();
+      });
+    </script>
 </body>
   <div style="position: fixed; bottom: 10px; right: 10px; font-family: 'Courier New', monospace; font-size: 12px; color: #eee;">
     Made with ❤️ by teens at <a href="https://hackclub.com" target="_blank" style="color: #f39c12; text-decoration: none;">Hack Club</a>
