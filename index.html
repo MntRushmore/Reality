@@ -3,21 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>reality - coming soon</title>
+    <title>reality</title>
     <style>
-        .background-texture {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url('https://hc-cdn.hel1.your-objectstorage.com/s/v3/7c7f94e5de92744bdcd245d57fa9213e4d4af1fd_cardboard-texture.jpg');
-            background-size: cover;
-            background-position: center;
-            opacity: 0.10;
-            pointer-events: none;
-            z-index: 0;
-        }
         * {
             margin: 0;
             padding: 0;
@@ -28,32 +15,42 @@
             font-family: 'Courier New', 'Lucida Console', monospace;
             background: #1a1a2e;
             color: #eee;
-            overflow: hidden;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            overflow-x: hidden;
+            font-size: 16px;
+            line-height: 1.4;
+            font-weight: normal;
             cursor: pointer;
             transition: background 0.5s, color 0.5s;
         }
         
-        .container {
-            text-align: center;
-            max-width: 900px;
-            padding: 60px;
+        .page {
+            width: 100vw;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-start;
+            padding: 60px 60px 60px 120px;
+            box-sizing: border-box;
         }
         
+        .page-1 { background: #1a1a2e; }
+        .page-2 { background: #16213e; }
+        .page-3 { background: #0f3460; }
+        .page-4 { background: #0e4b99; }
+        .page-5 { background: #2e8b57; }
+        
         .title {
-            font-size: 84px;
+            font-size: 64px;
             font-weight: normal;
             margin-bottom: 40px;
+            margin-top: 80px;
             font-family: 'Courier New', monospace;
             overflow: hidden;
             white-space: nowrap;
             width: 0;
             animation: typewriterTitle 2s steps(15, end) 0.5s both;
             border-right: 3px solid #f39c12;
-            margin: 0 auto 40px;
         }
         
         .title.finished {
@@ -61,101 +58,72 @@
             width: auto;
         }
         
-        .subtitle {
-            font-size: 24px;
-            line-height: 1.6;
-            max-width: 600px;
-            margin: 0 auto 60px;
+        .main-text {
+            font-size: 20px;
+            line-height: 1.8;
+            max-width: 900px;
             font-family: 'Courier New', monospace;
             font-weight: normal;
             opacity: 0;
-            animation: fadeInPulse 2s ease-in-out 3s both;
-        }
-        
-        .countdown {
-            display: flex;
-            justify-content: center;
-            gap: 40px;
+            animation: fadeInPulse 2s ease-in-out infinite alternate;
             margin-bottom: 60px;
-            opacity: 0;
-            animation: fadeInPulse 2s ease-in-out 4s both;
         }
         
-        .countdown-item {
-            text-align: center;
-            padding: 30px 25px;
-            border: 2px solid #f39c12;
-            background: rgba(243, 156, 18, 0.1);
-            min-width: 120px;
-            position: relative;
-        }
-        
-        .countdown-number {
-            font-size: 42px;
+        .page-title {
+            font-size: 40px;
             font-weight: normal;
-            color: #f39c12;
-            text-shadow: 0 0 10px #f39c12;
+            margin-bottom: 30px;
+            margin-top: 40px;
             font-family: 'Courier New', monospace;
+            text-shadow: 0 0 10px #f39c12, 0 0 20px #f39c12;
         }
         
-        .countdown-label {
-            font-size: 14px;
-            color: #eee;
-            text-transform: lowercase;
-            letter-spacing: 1px;
-            margin-top: 8px;
+        .bottom-section {
+            position: absolute;
+            bottom: 30px;
+            left: 120px;
+            right: 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .doomscroll-text {
+            font-size: 18px;
             font-family: 'Courier New', monospace;
+            animation: pulseText 1.2s infinite alternate;
         }
         
-        .notify-form {
-            opacity: 0;
-            animation: fadeInPulse 2s ease-in-out 5s both;
-            margin-bottom: 40px;
-            position: relative;
-            z-index: 2;
-        }
-        
-        .email-input {
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid #f39c12;
-            color: #eee;
-            padding: 15px 20px;
-            font-family: 'Courier New', monospace;
-            font-size: 16px;
-            width: 320px;
-            margin-right: 15px;
-            outline: none;
-            transition: all 0.3s;
-            position: relative;
-            z-index: 2;
-        }
-        
-        .email-input:focus {
-            border-color: #f39c12;
-            box-shadow: 0 0 15px rgba(243, 156, 18, 0.3);
-        }
-        
-        .email-input::placeholder {
-            color: #888;
-        }
-        
-        .notify-btn {
-            background: #f39c12;
-            color: #1a1a2e;
-            border: none;
-            padding: 15px 25px;
-            font-family: 'Courier New', monospace;
-            font-size: 16px;
+        .doomscroll-text:hover {
+            color: #FF6B6B;
             cursor: pointer;
-            transition: all 0.3s;
-            font-weight: normal;
-            position: relative;
-            z-index: 2;
         }
         
-        .notify-btn:hover {
-            background: #e67e22;
-            box-shadow: 0 0 20px rgba(243, 156, 18, 0.5);
+        .progress-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .progress-bar {
+            width: 200px;
+            height: 20px;
+            border: 2px solid #f39c12;
+            background: #1a1a2e;
+            position: relative;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: #f39c12;
+            width: 0%;
+            animation: progressFill 8s linear infinite;
+        }
+        
+        .progress-blocks {
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            letter-spacing: 1px;
         }
         
         .hack-club-badge {
@@ -167,23 +135,63 @@
             padding: 8px 16px;
             border: 1px solid #FFFFFF;
             background: #0000FF;
-            color: #FFFFFF;
             z-index: 1000;
             animation: glowBadge 1.5s infinite alternate;
-            pointer-events: none;
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: bold;
         }
         
-        .email-disclaimer {
-            opacity: 0;
-            transition: opacity 0.5s ease;
-            font-size: 10px;
-            color: #aaa;
+        .scroll-hint {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
             font-family: 'Courier New', monospace;
-            margin-top: -20px;
+            font-size: 14px;
+            animation: blink 1.5s infinite;
+        }
+        
+        .content-block {
+            margin: 40px 0;
+            max-width: 800px;
+        }
+        
+        .terminal-line {
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            margin: 10px 0;
+        }
+        
+        .green-text {
+            color: #00FF00;
         }
 
-        .notify-form.shown + .email-disclaimer {
-            opacity: 1;
+        .click-dot {
+          position: absolute;
+          width: 12px;
+          height: 12px;
+          background: rgba(255, 0, 0, 0.5);
+          border-radius: 50%;
+          pointer-events: none;
+          animation: fadeDot 2s forwards;
+          z-index: 9999;
+        }
+
+        @keyframes fadeDot {
+          from { opacity: 1; transform: scale(1); }
+          to { opacity: 0; transform: scale(2); }
+        }
+
+        .profile-box {
+          background: rgba(0, 0, 0, 0.6);
+          color: #00ff00;
+          font-family: 'Courier New', monospace;
+          font-size: 14px;
+          padding: 20px;
+          border: 1px solid #00ff00;
+          margin-top: 20px;
+          max-width: 400px;
         }
         
         @keyframes typewriterTitle {
@@ -191,208 +199,271 @@
             100% { width: 100%; }
         }
         
+        @keyframes fadeInText {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
         @keyframes fadeInPulse {
-            0% { opacity: 0; transform: scale(0.95); }
-            100% { opacity: 1; transform: scale(1); }
+            0% { opacity: 0.8; transform: scale(1); }
+            100% { opacity: 1; transform: scale(1.03); }
         }
         
+        @keyframes progressFill {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+        
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        @keyframes pulseText {
+            0% { color: #FF6B6B; transform: scale(1); }
+            100% { color: #FF3B3B; transform: scale(1.05); }
+        }
+
         @keyframes glowBadge {
             0% { box-shadow: 0 0 5px #00ffff; }
             100% { box-shadow: 0 0 20px #00ffff; }
         }
         
         @media (max-width: 768px) {
-            .container {
-                padding: 40px 30px;
+            .page {
+                padding: 40px 30px 40px 40px;
             }
             
             .title {
-                font-size: 56px;
+                font-size: 36px;
+                margin-bottom: 30px;
+                margin-top: 60px;
             }
             
-            .subtitle {
-                font-size: 18px;
+            .main-text {
+                font-size: 16px;
                 margin-bottom: 40px;
             }
             
-            .countdown {
-                flex-wrap: wrap;
+            .page-title {
+                font-size: 28px;
+                margin-bottom: 20px;
+                margin-top: 30px;
+            }
+            
+            .bottom-section {
+                left: 40px;
+                right: 30px;
+                flex-direction: column;
                 gap: 20px;
+                align-items: flex-start;
             }
-            
-            .countdown-item {
-                min-width: 100px;
-                padding: 20px 15px;
-            }
-            
-            .countdown-number {
-                font-size: 32px;
-            }
-            
-            .email-input {
-                width: 250px;
-                margin-bottom: 15px;
-                margin-right: 0;
-            }
-        }
-        body {
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
-        .touch-grass-container {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            z-index: 0;
-        }
-
-        .touch-grass {
-            width: 100%;
-            height: auto;
-            max-height: none;
-            object-fit: cover;
-            pointer-events: none;
-        }
-
-        .touch-grass-tooltip {
-            position: fixed;
-            bottom: 10px;
-            right: 110px;
-            background: rgba(0, 0, 0, 0.7);
-            color: #fff;
-            padding: 4px 8px;
-            font-size: 12px;
-            font-family: 'Courier New', monospace;
-            border-radius: 4px;
-            opacity: 0.9;
-            z-index: 1;
-            pointer-events: none;
         }
     </style>
 </head>
 <body>
-    <div class="background-texture"></div>
-    <div class="hack-club-badge">Coming Soon</div>
+  <div id="flashing-warning" style="position: fixed; inset: 0; background: #1a1a2e; color: #eee; font-family: 'Courier New', monospace; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999;">
+    <div style="max-width: 600px; text-align: center; padding: 20px;">
+      <h2 style="margin-bottom: 20px;">⚠️ Flashing Light Warning</h2>
+      <p style="margin-bottom: 30px;">This site contains flashing lights and animations. If you are sensitive to flashing lights or have a condition like photosensitive epilepsy, please proceed with caution.</p>
+      <button id="enter-site" style="padding: 10px 20px; font-size: 16px; font-family: 'Courier New', monospace; background: #f39c12; border: none; cursor: pointer; color: #1a1a2e;">Enter Reality</button>
+    </div>
+  </div>
+    <a class="hack-club-badge" href="https://forms.hackclub.com/reality" target="_blank" rel="noopener noreferrer">Submit</a>
     
-    <div class="container">
+    <div class="page page-1">
         <h1 class="title">reality</h1>
         
-        <div class="subtitle">
-            the time has come to break loose...<br>
-            break loose of your addictions.<br>
-            break loose of your life.<br> 
-            break loose of reality.<br>
+        <div class="main-text">
+            You're stuck in a digital loop! Doomscrolling, mindless tapping, and endless distractions. This isn't just about quitting apps. It's about reclaiming control. This YSWS is your chance to build a tool that helps you or others break free from a digital bad habit.
         </div>
         
-        <div class="countdown">
-            <div class="countdown-item">
-                <div class="countdown-number" id="days">00</div>
-                <div class="countdown-label">days</div>
-            </div>
-            <div class="countdown-item">
-                <div class="countdown-number" id="hours">00</div>
-                <div class="countdown-label">hours</div>
-            </div>
-            <div class="countdown-item">
-                <div class="countdown-number" id="minutes">00</div>
-                <div class="countdown-label">minutes</div>
-            </div>
-            <div class="countdown-item">
-                <div class="countdown-number" id="seconds">00</div>
-                <div class="countdown-label">seconds</div>
+        <div class="bottom-section">
+            <div class="doomscroll-text">build your escape route</div>
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+                <div class="progress-blocks">■■■■■■</div>
             </div>
         </div>
         
-        <div class="notify-form">
-            <input type="text" name="username" id="honeypot" style="display: none;">
-            <input type="email" class="email-input" placeholder="your@email.com" id="emailInput">
-            <button class="notify-btn" onclick="notify()">notify me</button>
+        <div class="scroll-hint">SCROLL DOWN</div>
+    </div>
+    
+    <div class="page page-2">
+        <h2 class="page-title">the_algorithm:</h2>
+        
+        <div class="main-text">
+            Algorithms feed your attention addiction. Every scroll is a data point. Every pause is a profile update. This page shows you what you're fighting against.
         </div>
-        <p class="email-disclaimer">
-          by RSVP'ing you consent to receiving emails about reality.
-        </p>
+        
+        <div class="content-block">
+            <div class="terminal-line">USER_SESSION: 04:47:33</div>
+            <div class="terminal-line">DOPAMINE_HITS: 247</div>
+            <div class="terminal-line">ATTENTION_HARVESTED: 99.7%</div>
+            <div class="terminal-line green-text">STATUS: CAPTURED</div>
+            <div class="terminal-line" id="algorithm-feed">// Loading personalized content stream...</div>
+        </div>
     </div>
-    <div class="touch-grass-container">
-        <video class="touch-grass" muted autoplay loop playsinline>
-            <source src="https://hc-cdn.hel1.your-objectstorage.com/s/v3/8358cdc203f57fe4ee2aa3a281460fb12a27b390_grass_desktop_final-vp9-chrome__1_.webm" type="video/webm">
-        </video>
+    
+    <div class="page page-3">
+        <h2 class="page-title">data_extraction:</h2>
+        
+        <div class="main-text">
+            Your clicks aren’t private. Your patterns are productized. If you don’t build tools to protect your digital self, someone else will use it against you.
+        </div>
+        
+        <div class="content-block">
+            <div class="terminal-line">// Some Ideas:</div>
+            <div class="terminal-line">// - Real-time data collection simulator</div>
+            <div class="terminal-line">// - Privacy policy decoder</div>
+            <div class="profile-box" id="user-profile">
+              <div>🧠 YOU:</div>
+              <div>- Clicked 0 times</div>
+              <div>- Scroll depth: 0px</div>
+              <div>- Tracking…</div>
+            </div>
+        </div>
     </div>
-    <div class="touch-grass-tooltip">credit: dbrand</div>
+    
+    <div class="page page-4">
+        <h2 class="page-title">get_rewarded:</h2>
+        
+        <div class="main-text">
+            Break a habit, earn a reward. Build a solution for your problem and we’ll send you a physical tool to support your recovery: analog alternatives, productivity boosters, or privacy gear. (Prizes may vary based on project scope and team discretion & country of residence)
+        </div>
+        
+        <div class="content-block">
+            <div class="terminal-line">REWARD SYSTEM:</div>
+            <div class="terminal-line"></div>
+            <div class="terminal-line">Your reward = $5/hr worth of helpful tools or items</div>
+            <div class="terminal-line">Submit a project that genuinely helps break a bad habit (Remember to use Hackatime)</div>
+            <div class="terminal-line">We'll match you with a useful, themed reward</div>
+            <div class="terminal-line">Think: notebooks, timers, analog gear, etc. You may even get some grass...</div>
+            <div class="terminal-line">Or something custom to your project (Up to the Reality Team)</div>
+            <div class="terminal-line"></div>
+            <div class="terminal-line green-text">STEP 3: RECEIVE A USEFUL REWARD FOR YOUR EFFORT</div>
+        </div>
+    </div>
+    
+    <div class="page page-5">
+        <h2 class="page-title">ship_now:</h2>
+        
+        <div class="main-text">
+            You’ve seen the problem. Now ship the solution. Join the #reality channel on Hack Club Slack, share your idea, and start building. You’ll get rewards, and most importantly, your attention back.
+        </div>
+        
+        <div class="content-block">
+            <div class="terminal-line green-text">$ git clone reality</div>
+            <div class="terminal-line">$ npm install hackatime</div>
+            <div class="terminal-line">$ yarn build real-solution</div>
+            <div class="terminal-line">$ git push origin recovery</div>
+            <div class="terminal-line"></div>
+            <div class="terminal-line">Project shipped successfully.</div>
+            <div class="terminal-line">Solution Made.</div>
+            <div class="terminal-line">Welcome back to reality.</div>
+            <div class="terminal-line"></div>
+            <div class="terminal-line">reality.hackclub.com</div>
+        </div>
+    </div>
+
+    <div class="page page-6">
+        <h2 class="page-title">example_ships:</h2>
+        <div class="main-text">
+            Real tools built to break bad habits:
+        </div>
+        <div class="content-block">
+          <div class="terminal-line">• Break Bad Habits - Make a app that locks apps with passwords.</div>
+          <div class="terminal-line">• Touch Grass - A app where you need to touch grass to unlock the app.</div>
+          <div class="terminal-line">• Loop Habit Tracker - Open‑source Android with streaks, reminders, and heatmaps.</div>
+          <div class="terminal-line">• Habitica - RPG-style habit gamifier on web & mobile.</div>
+          <div class="terminal-line">• hardtime.nvim - Neovim plugin to break bad typing habits.</div>
+          <div class="terminal-line">• ActivityWatch - Cross-platform desktop tracker for digital well‑being.</div>
+          <div class="terminal-line">• Chrome Extensions - Make a chrome extension that blocks sites after a set time.</div>
+          <div class="terminal-line">• Pavlok Snore Breaker - Uses ML + Pavlok zapper to interrupt snoring during sleep.</div>
+          <div class="terminal-line" style="color: #f39c12; font-style: italic;">→ Or create something uniquely yours! (Remember to track using Hackatime)</div>
+    </div>
     
     <script>
+      function startReality() {
         setTimeout(() => {
-            const title = document.querySelector('.title');
-            title.classList.add('finished');
+          const title = document.querySelector('.title');
+          title.classList.add('finished');
         }, 3000);
-        
-        const launchDate = new Date('2025-07-23T12:00:00-07:00');
-        
-        function updateCountdown() {
-            const now = new Date().getTime();
-            const distance = launchDate.getTime() - now;
-            
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-            
-            document.getElementById('days').textContent = days.toString().padStart(2, '0');
-            document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
-            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
-            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
-            
-            if (distance < 0) {
-                clearInterval(countdownInterval);
-                document.querySelector('.countdown').innerHTML = '<div class="countdown-item"><div class="countdown-number">REALITY :)</div><div class="countdown-label">now</div></div>';
-            }
-        }
-        
-        const countdownInterval = setInterval(updateCountdown, 1000);
-        updateCountdown();
 
-        
-        function notify() {
-            const email = document.getElementById('emailInput').value;
-            const username = document.getElementById('honeypot')?.value || '';
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-            if (!emailRegex.test(email)) {
-                alert('Please enter a valid email address.');
-                return;
-            }
-
-            fetch('https://n8n.rushilchopra.com/webhook/reality-email', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ email, username })
-            })
-            .then(() => {
-                alert('Thanks! You\'ll be notified when reality launches.');
-                document.getElementById('emailInput').value = '';
-            })
-            .catch(() => {
-                alert('There was an error submitting your email. Try again later.');
-            });
-        }
-        // made by rushmore with love @ hack club
-        document.addEventListener('click', () => {
-            document.body.style.filter = 'invert(1)';
-            setTimeout(() => {
-                document.body.style.filter = 'none';
-            }, 100);
+        const progressFill = document.querySelector('.progress-fill');
+        progressFill.addEventListener('animationend', () => {
+          progressFill.style.animation = 'none';
+          setTimeout(() => {
+            progressFill.style.animation = 'progressFill 8s linear infinite';
+          }, 1000);
         });
-        setTimeout(() => {
-            alert("You've been online too long. Go touch some grass 🌱");
-        }, 50000);
-        setTimeout(() => {
-            document.querySelector('.notify-form').classList.add('shown');
-        }, 5000);
-        console.log("Nice try. Reality isn’t in the console. 😎");
+
+        window.addEventListener('scroll', () => {
+          const scrollHint = document.querySelector('.scroll-hint');
+          if (window.scrollY > 50 && scrollHint) {
+            scrollHint.style.display = 'none';
+          }
+        });
+
+        document.addEventListener('click', () => {
+          document.body.style.filter = 'invert(1)';
+          setTimeout(() => {
+            document.body.style.filter = 'none';
+          }, 100);
+        });
+
+        let clickCount = 0;
+        document.addEventListener('click', (e) => {
+          const dot = document.createElement('div');
+          dot.className = 'click-dot';
+          dot.style.left = `${e.pageX}px`;
+          dot.style.top = `${e.pageY}px`;
+          document.body.appendChild(dot);
+          setTimeout(() => dot.remove(), 2000);
+          clickCount++;
+          const profile = document.getElementById('user-profile');
+          if (profile) {
+            profile.children[1].textContent = `- Clicked ${clickCount} times`;
+          }
+        });
+
+        window.addEventListener('scroll', () => {
+          const scrollY = window.scrollY;
+          const profile = document.getElementById('user-profile');
+          if (profile) {
+            profile.children[2].textContent = `- Scroll depth: ${scrollY}px`;
+          }
+        });
+
+        const algorithmFeed = document.getElementById('algorithm-feed');
+        const messages = [
+          "👀 Detected 7s hover on 'get_rewarded'",
+          "📈 Boosted meme content 12%",
+          "🎯 Served targeted notification at 3:14 PM",
+          "🔁 Refreshed feed loop",
+          "🧠 Predicted craving spike in 2 minutes",
+          "🎞️ Injected viral content suggestion",
+          "📊 Calculated dopamine reward delta"
+        ];
+        let msgIndex = 0;
+
+        setInterval(() => {
+          if (algorithmFeed && window.scrollY >= document.querySelector('.page-2').offsetTop) {
+            algorithmFeed.textContent = `// ${messages[msgIndex % messages.length]}`;
+            msgIndex++;
+          }
+        }, 2000);
+      }
+
+      document.getElementById('enter-site').addEventListener('click', () => {
+        document.getElementById('flashing-warning').style.display = 'none';
+        startReality();
+      });
     </script>
 </body>
+  <div style="position: fixed; bottom: 10px; right: 10px; font-family: 'Courier New', monospace; font-size: 12px; color: #eee;">
+    Made with ❤️ by teens at <a href="https://hackclub.com" target="_blank" style="color: #f39c12; text-decoration: none;">Hack Club</a>
+  </div>
 </html>
