@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Extension Launchpad</title>
+</head>
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background: #1a1a2e;
+    color: #eee;
+    font-family: 'Courier New', 'Lucida Console', monospace;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  .page {
+    width: 100vw;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 60px 60px 60px 120px;
+    box-sizing: border-box;
+    position: relative;
+    z-index: 2;
+  }
+  .title {
+    font-size: 2.8rem;
+    font-weight: 700;
+    margin-bottom: 22px;
+    color: #f39c12;
+    letter-spacing: 2.5px;
+    text-shadow: 0 0 10px #f39c12, 0 0 20px #f39c12;
+  }
+  .typewriter {
+    overflow: hidden;
+    border-right: .18em solid #ffb347;
+    white-space: nowrap;
+    margin: 0 auto;
+    letter-spacing: .18em;
+    animation: typing 2.8s steps(30, end), blink-caret .75s step-end infinite;
+  }
+  .typewriter.finished {
+    border-right: none;
+    animation: none;
+  }
+  @keyframes typing {
+    from { width: 0 }
+    to { width: 100% }
+  }
+  @keyframes blink-caret {
+    from, to { border-color: transparent }
+    50% { border-color: #ffb347; }
+  }
+  .main-text {
+    font-size: 1.3rem;
+    margin-bottom: 32px;
+    color: #ddd;
+    line-height: 1.7;
+  }
+  .content-block {
+    margin: 20px 0;
+    max-width: 800px;
+  }
+  .terminal-line {
+    font-family: 'Courier New', 'Lucida Console', monospace;
+    color: #ddd;
+    font-size: 1.05rem;
+    margin-bottom: 6px;
+  }
+  .terminal-line:last-child {
+    margin-bottom: 0;
+  }
+  .green-text {
+    color: #32cd32;
+  }
+  .bottom-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 36px;
+  }
+  .doomscroll-text {
+    font-size: 1.15rem;
+    color: #ffb347;
+    margin-bottom: 14px;
+    font-family: inherit;
+  }
+  .progress-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 14px;
+  }
+  .progress-bar {
+    width: 120px;
+    height: 12px;
+    background: #1a1a3a;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-right: 10px;
+  }
+  .progress-fill {
+    height: 100%;
+    width: 0;
+    background: #f39c12;
+    animation: progressFill 8s linear infinite;
+  }
+  @keyframes progressFill {
+    0% { width: 0; }
+    80% { width: 100%; }
+    100% { width: 0; }
+  }
+  .progress-blocks {
+    font-family: 'Courier New', 'Lucida Console', monospace;
+    font-size: 1.15rem;
+    color: #f39c12;
+    letter-spacing: 2.5px;
+  }
+  .scroll-hint {
+    margin-top: 36px;
+    text-align: center;
+    color: #eee;
+    font-size: 1rem;
+    letter-spacing: 2.5px;
+    animation: scrollHintBlink 1.2s infinite;
+  }
+  @keyframes scrollHintBlink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+  .click-dot {
+    width: 14px;
+    height: 14px;
+    background: #ffb347;
+    border-radius: 50%;
+    position: absolute;
+    pointer-events: none;
+    z-index: 9999;
+    box-shadow: 0 0 18px 5px #ffb34766;
+    animation: clickDotFade 2s forwards;
+  }
+  @keyframes clickDotFade {
+    from { opacity: 1; }
+    to { opacity: 0; transform: scale(2); }
+  }
+  .hack-club-badge {
+    position: fixed;
+    top: 18px;
+    right: 18px;
+    background: #ffb347;
+    color: #0f0f1e;
+    font-family: 'Courier New', 'Lucida Console', monospace;
+    font-size: 15px;
+    padding: 9px 20px;
+    border-radius: 10px;
+    text-decoration: none;
+    box-shadow: 0 3px 14px 0 #0005;
+    z-index: 1000;
+    transition: background 0.15s;
+  }
+  .hack-club-badge:hover {
+    background: #fff;
+    color: #ffb347;
+  }
+  @media (max-width: 600px) {
+    .page {
+      padding: 24px 10px 26px 10px;
+      margin: 24px 4px 0 4px;
+    }
+    .title {
+      font-size: 1.4rem;
+    }
+    .main-text {
+      font-size: 1.1rem;
+    }
+  }
+</style>
+</head>
+<body>
+  <div id="flashing-warning" style="position: fixed; inset: 0; background: #1a1a2e; color: #eee; font-family: 'Courier New', monospace; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999;">
+    <div style="max-width: 600px; text-align: center; padding: 20px;">
+      <h2 style="margin-bottom: 20px;">⚠️ Flashing Light Warning</h2>
+      <p style="margin-bottom: 30px;">This site contains flashing lights and animations. If you are sensitive to flashing lights or have a condition like photosensitive epilepsy, please proceed with caution.</p>
+      <button id="enter-site" style="padding: 10px 20px; font-size: 16px; font-family: 'Courier New', monospace; background: #f39c12; border: none; cursor: pointer; color: #1a1a2e;">Enter Reality</button>
+    </div>
+  </div>
+
+  <a class="hack-club-badge" href="https://forms.hackclub.com/reality" target="_blank" rel="noopener noreferrer">Submit</a>
+
+  <div class="page page-1">
+    <h1 class="title typewriter">extension_launchpad</h1>
+
+    <div class="main-text">
+      Build a Chrome Extension that stops you from spiraling. Whether it’s auto-closing YouTube, locking Discord after dark, or forcing you to think before doomscrolling—this page is your launchpad.
+    </div>
+
+    <div class="content-block">
+      <div class="terminal-line">// Starter Template</div>
+      <div class="terminal-line green-text">Try → <a href="https://github.com/MntRushmore/countdownlock" target="_blank" style="color: #32cd32; text-decoration: underline;">MntRushmore/countdownlock</a></div>
+    </div>
+
+    <div class="content-block">
+      <div class="terminal-line">// Locking Tricks</div>
+      <div class="terminal-line green-text">chrome.storage + prompt() → lock distracting sites</div>
+      <div class="terminal-line green-text">Or: show a math problem before unlocking</div>
+    </div>
+
+    <div class="content-block">
+      <div class="terminal-line">// Time Tracking</div>
+      <div class="terminal-line green-text">Timers → chrome.alarms</div>
+      <div class="terminal-line green-text">Track time on page with performance.now()</div>
+    </div>
+
+    <div class="content-block">
+      <div class="terminal-line">// Weird Ideas</div>
+      <div class="terminal-line green-text">• Replace Instagram feed with your to-do list</div>
+      <div class="terminal-line green-text">• Redirect Twitter to a journaling prompt</div>
+      <div class="terminal-line green-text">• Auto-log you out after 3 scrolls</div>
+    </div>
+
+    <div class="bottom-section">
+      <div class="doomscroll-text">build your extension</div>
+      <div class="progress-container">
+        <div class="progress-bar">
+          <div class="progress-fill"></div>
+        </div>
+        <div class="progress-blocks">■■■■■■</div>
+      </div>
+    </div>
+
+    <div class="scroll-hint">SCROLL DOWN</div>
+  </div>
+
+  <div class="page page-2">
+    <h2 class="title">bonus_bits</h2>
+
+    <div class="main-text">
+      Need some more fuel? Here's a mix of inspiration and random sparks. Don't overthink it—build what's annoying <em>you</em>.
+    </div>
+
+    <div class="content-block">
+      <div class="terminal-line">// 🌀 Real Habits to Break</div>
+      <div class="terminal-line green-text">• Autoplay spirals on YouTube</div>
+      <div class="terminal-line green-text">• Infinite-scroll on Twitter/X</div>
+      <div class="terminal-line green-text">• Opening the same 3 tabs every 5 mins</div>
+    </div>
+
+    <div class="content-block">
+      <div class="terminal-line">// Half-baked ideas</div>
+      <div class="terminal-line green-text">• Extension that plays annoying sounds if you're scrolling too fast</div>
+      <div class="terminal-line green-text">• Replaces social feed with compliments from your past self</div>
+      <div class="terminal-line green-text">• Blocks sites unless you write a haiku</div>
+    </div>
+
+    <div class="content-block">
+      <div class="terminal-line">// Tools to check out</div>
+      <div class="terminal-line green-text">• chrome.tabs → interact with tabs</div>
+      <div class="terminal-line green-text">• chrome.storage → save state & progress</div>
+      <div class="terminal-line green-text">• chrome.runtime.onInstalled → run code on install</div>
+    </div>
+
+    <div class="content-block">
+      <div class="terminal-line green-text">Don't worry about making it perfect. Just ship it. Then improve it. 🚀</div>
+    </div>
+  </div>
+
+  <script>
+    function startReality() {
+      setTimeout(() => {
+        const title = document.querySelector('.title');
+        title.classList.add('finished');
+      }, 3000);
+
+      const progressFill = document.querySelector('.progress-fill');
+      if (progressFill) {
+        progressFill.addEventListener('animationend', () => {
+          progressFill.style.animation = 'none';
+          setTimeout(() => {
+            progressFill.style.animation = 'progressFill 8s linear infinite';
+          }, 1000);
+        });
+      }
+
+      window.addEventListener('scroll', () => {
+        const scrollHint = document.querySelector('.scroll-hint');
+        if (window.scrollY > 50 && scrollHint) {
+          scrollHint.style.display = 'none';
+        }
+      });
+
+      document.addEventListener('click', () => {
+        document.body.style.filter = 'invert(1)';
+        setTimeout(() => {
+          document.body.style.filter = 'none';
+        }, 100);
+      });
+
+      document.addEventListener('click', (e) => {
+        const dot = document.createElement('div');
+        dot.className = 'click-dot';
+        dot.style.left = `${e.pageX}px`;
+        dot.style.top = `${e.pageY}px`;
+        document.body.appendChild(dot);
+        setTimeout(() => dot.remove(), 2000);
+      });
+    }
+
+    document.getElementById('enter-site').addEventListener('click', () => {
+      document.getElementById('flashing-warning').style.display = 'none';
+      startReality();
+    });
+  </script>
+
+  <div style="position: fixed; bottom: 10px; right: 10px; font-family: 'Courier New', monospace; font-size: 12px; color: #eee;">
+    Made with ❤️ by teens at <a href="https://hackclub.com" target="_blank" style="color: #f39c12; text-decoration: none;">Hack Club</a>
+  </div>
+</body>
+</html>
