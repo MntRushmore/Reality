@@ -354,12 +354,8 @@
           <button class="confirm-btn confirm-back" id="confirmBack">Back</button>
         </div>
       </div>
-    </div>
-
 <script>
-  // Ideas API by Jim Dinias
   const API_BASE = 'https://realityapi.pythonanywhere.com';
-
 
   const generateBtn = document.getElementById('generateBtn');
   const ideaContainer = document.getElementById('ideaContainer');
@@ -372,7 +368,6 @@
 
   let currentIdea = null;
 
-
   setTimeout(() => {
     const warning = document.getElementById('flashing-warning');
     if (warning) {
@@ -380,10 +375,31 @@
     }
   }, 3000);
 
-
   document.getElementById('enter-site').addEventListener('click', () => {
     document.getElementById('flashing-warning').style.display = 'none';
   });
+
+
+  async function fetchWithFallback(endpoint, options = {}) {
+    const urls = [
+      `https://corsproxy.io/?${API_BASE}${endpoint}`,
+      `https://api.cors.lol/?url=${API_BASE}${endpoint}`
+    ];
+
+    for (let i = 0; i < urls.length; i++) {
+      try {
+        const res = await fetch(urls[i], options);
+        if (res.ok) {
+          return res;
+        } else {
+          console.warn(`Proxy ${i + 1} returned status:`, res.status);
+        }
+      } catch (err) {
+        console.warn(`Proxy ${i + 1} failed:`, err);
+      }
+    }
+    throw new Error('Both proxies failed');
+  }
 
   async function fetchRandomIdea() {
     generateBtn.disabled = true;
@@ -394,27 +410,15 @@
     ideaId.textContent = '';
 
     try {
-      const res = await fetch(`${API_BASE}/random`, {
+
+      const res = await fetchWithFallback('/random', {
         method: 'GET',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
-        },
-        mode: 'cors'
-      });
-      
-      if (!res.ok) {
-        if (res.status === 404) {
-          ideaText.textContent = 'No more ideas left!';
-        } else {
-          ideaText.textContent = `Failed to fetch idea (${res.status}). Try again.`;
         }
-        currentIdea = null;
-        generateBtn.disabled = false;
-        generateBtn.textContent = 'Give me an idea!';
-        return;
-      }
-      
+      });
+
       const idea = await res.json();
       currentIdea = idea;
       ideaText.textContent = idea.text || idea.idea || 'Idea text missing';
@@ -422,11 +426,7 @@
       acceptIdeaBtn.style.display = 'inline-block';
     } catch (e) {
       console.error('Error fetching idea:', e);
-      if (e.name === 'TypeError' && e.message.includes('Failed to fetch')) {
-        ideaText.textContent = 'CORS Error: Please serve this file from a web server or use a CORS proxy.';
-      } else {
-        ideaText.textContent = 'Error fetching idea. Please try again.';
-      }
+      ideaText.textContent = 'Error fetching idea (CORS issue). Try again.';
       currentIdea = null;
     }
 
@@ -449,17 +449,16 @@
     ideaText.textContent = 'Removing idea...';
 
     try {
-      const res = await fetch(`${API_BASE}/delete/${currentIdea.id}`, {
+
+      const res = await fetchWithFallback(`/delete/${currentIdea.id}`, {
         method: 'DELETE',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
-        },
-        mode: 'cors'
+        }
       });
-      if (!res.ok) {
-        throw new Error(`Failed to delete idea (${res.status})`);
-      }
+      if (!res.ok) throw new Error(`Failed to delete idea (${res.status})`);
+
       await res.json();
       alert('Idea accepted and removed from database!');
       hideConfirmPopup();
@@ -467,32 +466,26 @@
       currentIdea = null;
     } catch (error) {
       console.error('Error deleting idea:', error);
-      if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
-        alert('CORS Error: Please serve this file from a web server.');
-      } else {
-        alert('Could not remove idea. Please try again later.');
-      }
+      alert('Could not remove idea. Please try again later.');
     } finally {
       acceptIdeaBtn.disabled = false;
     }
   }
 
-
   generateBtn.addEventListener('click', fetchRandomIdea);
-  
+
   acceptIdeaBtn.addEventListener('click', () => {
     if (!currentIdea) return;
     showConfirmPopup();
   });
-  
+
   confirmContinue.addEventListener('click', () => {
     deleteCurrentIdea();
   });
-  
+
   confirmBack.addEventListener('click', () => {
     hideConfirmPopup();
   });
-
 
   confirmPopup.addEventListener('click', (e) => {
     if (e.target === confirmPopup) {
@@ -500,6 +493,7 @@
     }
   });
 </script>
+
 
   <div style="position: fixed; bottom: 10px; right: 10px; font-family: 'Courier New', monospace; font-size: 12px; color: #eee;">
     Made with ❤️ by teens at <a href="https://hackclub.com" target="_blank" style="color: #f39c12; text-decoration: none;">Hack Club</a>
