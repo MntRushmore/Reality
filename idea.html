@@ -358,7 +358,7 @@
 
 <script>
   // Ideas API by Jim Dinias
-  const API_BASE = 'https://realityapi.pythonanywhere.com';
+  const API_BASE = 'https://corsproxy.io/?url=https://realityapi.pythonanywhere.com';
 
 
   const generateBtn = document.getElementById('generateBtn');
@@ -371,6 +371,40 @@
   const confirmBack = document.getElementById('confirmBack');
 
   let currentIdea = null;
+
+  const localIdeas = [
+  { id: 'local1', text: 'Build a minimalist to-do app with dark mode.' },
+  { id: 'local2', text: 'Create a browser extension that replaces new tab with a random poem.' },
+  { id: 'local3', text: 'Make a mobile app that helps users meditate with daily reminders.' },
+  { id: 'local4', text: 'Develop a simple multiplayer tic-tac-toe game using websockets.' },
+  { id: 'local5', text: 'Build a Chrome extension that summarizes long articles.' },
+  { id: 'local6', text: 'Create a budget tracker that syncs with your bank account.' },
+  { id: 'local7', text: 'Build a recipe app with ingredient-based search and meal planning.' },
+  { id: 'local8', text: 'Make a habit tracker with streaks and motivational quotes.' },
+  { id: 'local9', text: 'Develop a local weather app with customizable notifications.' },
+  { id: 'local10', text: 'Create a language flashcard app with spaced repetition.' },
+  { id: 'local11', text: 'Build a virtual bookshelf that tracks books read and want-to-read lists.' },
+  { id: 'local12', text: 'Make a workout tracker that suggests exercises based on goals.' },
+  { id: 'local13', text: 'Develop a collaborative drawing canvas for remote teams.' },
+  { id: 'local14', text: 'Create a GIF searcher app with trending and favorites.' },
+  { id: 'local15', text: 'Build a mood journal app with daily prompts and stats.' },
+  { id: 'local16', text: 'Make a travel bucket list with location tagging and notes.' },
+  { id: 'local17', text: 'Develop a movie recommendation app based on your watch history.' },
+  { id: 'local18', text: 'Create a Pomodoro timer with customizable intervals and reports.' },
+  { id: 'local19', text: 'Build a local events finder with RSVP and calendar integration.' },
+  { id: 'local20', text: 'Make a pet care reminder app for vaccinations and appointments.' },
+  { id: 'local21', text: 'Develop a simple blog platform with markdown support.' },
+  { id: 'local22', text: 'Create a quiz app for learning geography with maps.' },
+  { id: 'local23', text: 'Build a meal calorie calculator with barcode scanning.' },
+  { id: 'local24', text: 'Make a social gratitude journal with daily sharing.' },
+  { id: 'local25', text: 'Develop a virtual plant watering scheduler and care guide.' },
+  { id: 'local26', text: 'Create a password manager with local encryption.' },
+  { id: 'local27', text: 'Build a news aggregator that filters articles by your interests.' },
+  { id: 'local28', text: 'Make a flashcard app for coding interview questions.' },
+  { id: 'local29', text: 'Develop a time zone converter with world clock features.' },
+  { id: 'local30', text: 'Create a minimalist budget planner with visual charts.' },
+];
+
 
 
   setTimeout(() => {
@@ -392,6 +426,7 @@
     ideaContainer.style.display = 'block';
     ideaText.textContent = 'Loading idea...';
     ideaId.textContent = '';
+
 
     try {
       const res = await fetch(`${API_BASE}/random`, {
@@ -420,15 +455,68 @@
       ideaText.textContent = idea.text || idea.idea || 'Idea text missing';
       ideaId.textContent = idea.id;
       acceptIdeaBtn.style.display = 'inline-block';
+      generateBtn.disabled = false;
+      generateBtn.textContent = 'Give me another idea!';
+      return;
     } catch (e) {
-      console.error('Error fetching idea:', e);
-      if (e.name === 'TypeError' && e.message.includes('Failed to fetch')) {
-        ideaText.textContent = 'CORS Error: Please serve this file from a web server or use a CORS proxy.';
-      } else {
-        ideaText.textContent = 'Error fetching idea. Please try again.';
-      }
-      currentIdea = null;
+      console.error('First API call failed:', e);
     }
+
+
+    try {
+      const res = await fetch(`${API_BASE}/random`, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        mode: 'cors'
+      });
+      
+      if (!res.ok) {
+        if (res.status === 404) {
+          ideaText.textContent = 'No more ideas left!';
+        } else {
+          ideaText.textContent = `Failed to fetch idea (${res.status}). Try again.`;
+        }
+        currentIdea = null;
+        generateBtn.disabled = false;
+        generateBtn.textContent = 'Give me an idea!';
+        return;
+      }
+      
+      const idea = await res.json();
+      currentIdea = idea;
+      ideaText.textContent = idea.text || idea.idea || 'Idea text missing';
+      ideaId.textContent = idea.id;
+      acceptIdeaBtn.style.display = 'inline-block';
+      generateBtn.disabled = false;
+      generateBtn.textContent = 'Give me another idea!';
+      return;
+    } catch (e) {
+      console.error('Second API call failed:', e);
+    }
+
+    const randomIndex = Math.floor(Math.random() * localIdeas.length);
+    const fallbackIdea = localIdeas[randomIndex];
+    currentIdea = fallbackIdea;
+    ideaText.textContent = fallbackIdea.text;
+    ideaId.textContent = fallbackIdea.id;
+    acceptIdeaBtn.style.display = 'none'; 
+    
+
+    const fallbackMessage = document.createElement('div');
+    fallbackMessage.style.cssText = 'color: #ff6b6b; font-size: 14px; margin-top: 10px; font-style: italic;';
+    fallbackMessage.textContent = 'Since the API failed for you, a fallback idea from a local variable was generated. This means you cannot claim the idea and other people might view this as well.';
+    
+
+    const existingMessage = ideaContainer.querySelector('.fallback-message');
+    if (existingMessage) {
+      existingMessage.remove();
+    }
+    
+    fallbackMessage.className = 'fallback-message';
+    ideaContainer.appendChild(fallbackMessage);
 
     generateBtn.disabled = false;
     generateBtn.textContent = 'Give me another idea!';
